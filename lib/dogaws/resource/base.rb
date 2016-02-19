@@ -13,6 +13,14 @@ module Dogaws
         @to = to
       end
 
+      def metrics
+        raise NotImplementedError
+      end
+
+      def culculated_metrics
+        raise NotImplementedError
+      end
+
     end
   end
 end

@@ -94,6 +94,10 @@ module Dogaws
         list
       end
 
+      def calculated_metrics(points)
+        []
+      end
+
     end
   end
 end

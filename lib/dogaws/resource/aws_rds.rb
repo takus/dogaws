@@ -33,6 +33,33 @@ module Dogaws
         }
       end
 
+      def calculated_metrics(point_by_time)
+        iops =
+          if @options['storage_type'] == 'io1'
+            @options['iops']
+          elsif @options['storage_type'] == 'gp2' and @options['allocated_storage']
+            @options['allocated_storage'] * 3
+          elsif @options['storage_type'] == 'standard'
+            100
+          else
+            nil
+          end
+
+        points = []
+        point_by_time.each do |ts, p|
+          if iops and p['aws.rds.read_iops'] and p['aws.rds.write_iops']
+            points << {
+              name: 'aws.rds.iops_utilization',
+              points: [
+                [Time.at(ts), 100 * (p['aws.rds.read_iops'] + p['aws.rds.write_iops']) / iops ]
+              ],
+              tags: @tags,
+            }
+          end
+        end
+        points
+      end
+
     end
   end
 end
