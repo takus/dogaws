@@ -1,0 +1,23 @@
+aws:
+  region: ap-northeast-1
+  resources:
+    - name: db1
+      type: aws_rds
+      dimensions:
+        - name: DBInstanceIdentifier
+          value: db1
+      tags:
+        - region:ap-northeast-1
+        - availability-zone:ap-northeast-1b
+        - dbinstanceidentifier:db1
+        - dbinstanceclass:db.r3.xlarge
+        - engine:mysql
+        - engineversion:5.6.21b
+        - dbrole:master
+        - dbsource:db1
+  delay_seconds: 60
+  range_seconds: 300
+datadog:
+  host: cloudwatch
+  api_key: xxxx 
+  app_key: xxxx
