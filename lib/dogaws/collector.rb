@@ -42,7 +42,12 @@ module Dogaws
 
     def post(metric)
       begin
-        points = @cloudwatch.get_metric_statistics(metric[:source]).datapoints.map { |d| [d.timestamp, d.maximum] }
+        points = @cloudwatch.get_metric_statistics(metric[:source]).datapoints.map { |d|
+          [
+            d.timestamp,
+            d.maximum || d.sum || d.average || d.minimum || d.sample_count
+          ]
+        }
         @logger.info "#{metric[:name]} #{metric[:tags]} #{points.to_json}"
         @dog.emit_points(
           metric[:name],

@@ -3,15 +3,15 @@ module Dogaws
     class AwsRds < Base
 
       CONFIG = {
-        'ReadIOPS' => ['aws.rds.read_iops', 'Maximum', 'Count/Second'],
-        'WriteIOPS' => ['aws.rds.write_iops', 'Maximum', 'Count/Second'],
-        'ReadLatency' => ['aws.rds.read_latency', 'Maximum', 'Seconds'],
-        'WriteLatency' => ['aws.rds.write_latency', 'Maximum', 'Seconds'],
-        'CPUUtilization' => ['aws.rds.cpuutilization', 'Maximum', 'Percent'],
-        'FreeableMemory' => ['aws.rds.freeable_memory', 'Maximum', 'Bytes'],
-        'FreeStorageSpace'=> ['aws.rds.free_storage_space', 'Maximum', 'Bytes'],
-        'NetworkReceiveThroughput' => ['aws.rds.network_receive_throughput', 'Maximum', 'Bytes/Second'],
-        'NetworkTransmitThroughput'=> ['aws.rds.network_transmit_throughput', 'Maximum', 'Bytes/Second'],
+        'ReadIOPS' => ['aws.rds.read_iops', ['Maximum'], 'Count/Second'],
+        'WriteIOPS' => ['aws.rds.write_iops', ['Maximum'], 'Count/Second'],
+        'ReadLatency' => ['aws.rds.read_latency', ['Maximum'], 'Seconds'],
+        'WriteLatency' => ['aws.rds.write_latency', ['Maximum'], 'Seconds'],
+        'CPUUtilization' => ['aws.rds.cpuutilization', ['Maximum'], 'Percent'],
+        'FreeableMemory' => ['aws.rds.freeable_memory', ['Minimum'], 'Bytes'],
+        'FreeStorageSpace'=> ['aws.rds.free_storage_space', ['Minimum'], 'Bytes'],
+        'NetworkReceiveThroughput' => ['aws.rds.network_receive_throughput', ['Maximum'], 'Bytes/Second'],
+        'NetworkTransmitThroughput'=> ['aws.rds.network_transmit_throughput', ['Maximum'], 'Bytes/Second'],
       }
 
       def metrics
@@ -26,7 +26,7 @@ module Dogaws
               start_time: @from,
               end_time: @to,
               period: 60,
-              statistics: [CONFIG[metric_name][1]],
+              statistics: CONFIG[metric_name][1],
               unit: CONFIG[metric_name][2]
             }
           }
