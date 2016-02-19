@@ -1,4 +1,3 @@
-require 'logger'
 require 'json'
 require 'parallel'
 require 'aws-sdk'
@@ -8,10 +7,6 @@ module Dogaws
   class Collector
 
     def initialize(config)
-      @logger = Logger.new(STDERR).tap { |logger|
-        logger.level = Logger::INFO
-      }
-
       @cloudwatch = Aws::CloudWatch::Client.new(region: config['aws']['region'])
 
       to = Time.now - config['aws']['delay_seconds']
@@ -35,7 +30,7 @@ module Dogaws
             end
           }
         rescue => e
-          @logger.error "#{e}"
+          Dogaws.logger.error "#{e}"
         end
       end
     end
@@ -48,14 +43,14 @@ module Dogaws
             d.maximum || d.sum || d.average || d.minimum || d.sample_count
           ]
         }
-        @logger.info "#{metric[:name]} #{metric[:tags]} #{points.to_json}"
+        Dogaws.logger.info "#{metric[:name]} #{metric[:tags]} #{points.to_json}"
         @dog.emit_points(
           metric[:name],
           points,
           :tags => metric[:tags]
         )
       rescue => e
-        @logger.error "#{e} - #{metric[:source].to_json}"
+        Dogaws.logger.error "#{e} - #{metric[:source].to_json}"
       end
     end
 

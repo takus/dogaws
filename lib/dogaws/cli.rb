@@ -11,8 +11,13 @@ module Dogaws
       :default => "dogaws.yml",
       :type    => :string
     def post
-      config = YAML.load_file(options[:config])
-      Dogaws::Collector.new(config).run
+      begin
+        config = YAML.load_file(options[:config])
+        Dogaws::Collector.new(config).run
+      rescue => e
+        Dogaws.logger.error e.message
+        exit 1
+      end
     end
   end
 end
