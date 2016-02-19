@@ -20,8 +20,8 @@ module Dogaws
 
       @dog = Dogapi::Client.new(
         config['datadog']['api_key'],
-        application_key: config['datadog']['app_key'],
-        host: config['datadog']['host']
+        application_key=config['datadog']['app_key'],
+        host=config['datadog']['host']
       )
       @concurrency = config['concurrency'] || 0
     end
