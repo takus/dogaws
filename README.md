@@ -7,6 +7,7 @@ Yet another [Datadog CloudWatch Integragion](http://docs.datadoghq.com/integrati
 Run `dogaws` command like this:
 
 ```bash
+# post cloudwatch metrics to datadog
 $ dogaws --config dogaws.yml
 I, [2016-02-19T16:22:15.774725 #29631]  INFO -- : aws.rds.cpuutilization ["region:ap-northeast-1", "availability-zone:ap-northeast-1b", "dbinstanceidentifier:db1", "dbinstanceclass:db.t2.micro", "engine:mysql", "engineversion:5.6.21b", "dbrole:master"] [["2016-02-19 07:17:00 UTC",7.42],["2016-02-19 07:15:00 UTC",12.08],["2016-02-19 07:13:00 UTC",10.75],["2016-02-19 07:14:00 UTC",16.33],["2016-02-19 07:16:00 UTC",10.92]]
 ...
