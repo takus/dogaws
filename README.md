@@ -1,6 +1,6 @@
 # Dogaws
 
-Yet another [Datadog CloudWatch Integragion](https://docs.datadoghq.com/integrations/aws/).
+Yet another [Datadog CloudWatch Integragion](http://docs.datadoghq.com/integrations/aws/).
 
 ## Usage
 
