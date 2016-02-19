@@ -11,11 +11,22 @@ module Dogaws
       }
 
       MEMCACHED_CONFIG = {
+        'CurrConnections' => ['aws.elasticache.curr_connections', ['Maximum'], 'Count'],
+        'CmdGet' => ['aws.elasticache.cmd_get', ['Sum'], 'Count'],
+        'CmdSet' => ['aws.elasticache.cmd_set', ['Sum'], 'Count'],
+        'GetHits' => ['aws.elasticache.get_hits', ['Sum'], 'Count'],
+        'GetMisses' => ['aws.elasticache.get_misses', ['Sum'], 'Count'],
         'Evictions' => ['aws.elasticache.evictions', ['Sum'], 'Count'],
       }
 
       REDIS_CONFIG = {
+        'CurrConnections' => ['aws.elasticache.curr_connections', ['Maximum'], 'Count'],
+        'GetTypeCmds' => ['aws.elasticache.get_type_cmds', ['Sum'], 'Count'],
+        'SetTypeCmds' => ['aws.elasticache.set_type_cmds', ['Sum'], 'Count'],
+        'CacheHits' => ['aws.elasticache.cache_hits', ['Sum'], 'Count'],
+        'CacheMisses' => ['aws.elasticache.cache_misses', ['Sum'], 'Count'],
         'Evictions' => ['aws.elasticache.evictions', ['Sum'], 'Count'],
+        'ReplicationLag' => ['aws.elasticache.replication_lag', ['Maximum'], 'Seconds'],
       }
 
       def metrics
@@ -59,6 +70,10 @@ module Dogaws
 
         if @options['engine'] == 'redis'
           REDIS_CONFIG.each do |n, c|
+            if n == 'ReplicationLag'
+              next unless @options['replication']
+            end
+
             list << {
               name: c[0],
               tags: @tags,
