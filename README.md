@@ -1,6 +1,6 @@
 # Dogaws
 
-Yet another [Datadog CloudWatch Integragion](http://docs.datadoghq.com/integrations/aws/).
+Yet another [Datadog CloudWatch Integragion](http://docs.datadoghq.com/integrations/aws/). Dogaws gets CloudWatch metrics for AWS services such as RDS, DynamoDB, ElastiCache, and posts them to Datadog.
 
 ## Usage
 
