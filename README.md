@@ -15,6 +15,7 @@ I, [2016-02-19T16:22:15.774725 #29631]  INFO -- : aws.rds.cpuutilization ["regio
 This is an example of `dogaws.yml`:
 
 ```yaml
+custom_resource_path: /path/to/custom_resource
 aws:
   region: ap-northeast-1
   resources:
