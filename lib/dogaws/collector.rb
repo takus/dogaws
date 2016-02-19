@@ -11,7 +11,9 @@ module Dogaws
 
       to = Time.now - config['aws']['delay_seconds']
       from = to - config['aws']['range_seconds']
-      @resources = config['aws']['resources'].map { |r| Dogaws::Resource::create(r, from, to) }
+
+      Dogaws::Resource.load(config['custom_resource_path'])
+      @resources = config['aws']['resources'].map { |r| Dogaws::Resource.create(r, from, to) }
 
       @dog = Dogapi::Client.new(
         config['datadog']['api_key'],

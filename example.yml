@@ -1,3 +1,4 @@
+custom_resource_path: /path/to/custom_resource
 aws:
   region: ap-northeast-1
   resources:
