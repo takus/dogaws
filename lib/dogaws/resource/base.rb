@@ -17,7 +17,7 @@ module Dogaws
         raise NotImplementedError
       end
 
-      def culculated_metrics
+      def calculated_metrics
         raise NotImplementedError
       end
 
