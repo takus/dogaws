@@ -49,7 +49,7 @@ module Dogaws
               namespace: 'AWS/DynamoDB',
               metric_name: metric_name,
               dimensions: @dimensions,
-              start_time: @from - 300,
+              start_time: @from,
               end_time: @to,
               period: 60,
               statistics: CONFIG[metric_name][1],

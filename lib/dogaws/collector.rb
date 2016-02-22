@@ -47,7 +47,9 @@ module Dogaws
 
             resource.metrics.each do |m|
               point_by_name[m[:name]] = post(m)
-              Dogaws.logger.info "post #{point_by_name[m[:name]].size} metrics (#{m[:name]})"
+              if point_by_name[m[:name]].size > 0
+                Dogaws.logger.info "post #{point_by_name[m[:name]].size} metrics (#{m[:name]})"
+              end
             end
 
             point_by_name.each do |name, points|
