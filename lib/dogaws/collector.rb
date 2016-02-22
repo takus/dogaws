@@ -63,7 +63,9 @@ module Dogaws
                 m[:points],
                 :tags => m[:tags]
               )
-              Dogaws.logger.info "post #{m[:points].size} metrics (#{m[:name]})"
+              if m[:points].size > 0
+                Dogaws.logger.info "post #{m[:points].size} metrics (#{m[:name]})"
+              end
             end
           }
         rescue => e

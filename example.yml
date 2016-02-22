@@ -52,6 +52,14 @@ aws:
       options:
         engine: redis
         replication: false
+    - name: ddb1
+      type: aws_dynamodb
+      dimensions:
+        - name: TableName
+          value: ddb1
+      tags:
+        - region:ap-northeast-1
+        - tablename:ddb1
   delay_seconds: 60
   range_seconds: 300
 datadog:
