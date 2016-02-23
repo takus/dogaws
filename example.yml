@@ -2,49 +2,49 @@ custom_resource_path: /path/to/custom_resource
 aws:
   region: ap-northeast-1
   resources:
-    - name: db1
+    - name: xxxx
       type: aws_rds
       dimensions:
         - name: DBInstanceIdentifier
-          value: db1
+          value: xxxx
       tags:
         - region:ap-northeast-1
         - availability-zone:ap-northeast-1b
-        - dbinstanceidentifier:db1
+        - dbinstanceidentifier:xxxx
         - dbinstanceclass:db.r3.large
         - engine:mysql
         - engineversion:5.6.21b
       options:
         storage_type: gp2
         allocated_storage: 40
-    - name: memcached1
+    - name: xxxx
       type: aws_elasticache
       dimensions:
         - name: CacheClusterId
-          value: "memcached1"
+          value: "xxxx"
         - name: CacheNodeId
           value: "0001"
       tags:
         - region:ap-northeast-1
         - availability-zone:ap-northeast-1c
-        - cacheclusterid:memcached1
+        - cacheclusterid:xxxx
         - cachenodeid:0001
         - cache_node_type:cache.r3.large
         - engine:memcached
         - engine_version:1.4.14
       options:
         engine: memcached
-    - name: redis1
+    - name: xxxx
       type: aws_elasticache
       dimensions:
         - name: CacheClusterId
-          value: "redis1"
+          value: "xxxx"
         - name: CacheNodeId
           value: "0001"
       tags:
         - region:ap-northeast-1
         - availability-zone:ap-northeast-1b
-        - cacheclusterid:redis1
+        - cacheclusterid:xxxx
         - cachenodeid:0001
         - cache_node_type:cache.r3.large
         - engine:redis
@@ -52,14 +52,25 @@ aws:
       options:
         engine: redis
         replication: false
-    - name: ddb1
+    - name: xxxx
       type: aws_dynamodb
       dimensions:
         - name: TableName
-          value: ddb1
+          value: xxxx
       tags:
         - region:ap-northeast-1
         - tablename:ddb1
+    - name: xxxx
+      type: aws_kinesis
+      dimensions:
+        - name: StreamName
+          value: xxxx
+      tags:
+        - region:ap-northeast-1
+        - streamname:xxxx
+      options:
+        shards: 2
+
   delay_seconds: 60
   range_seconds: 300
 datadog:
