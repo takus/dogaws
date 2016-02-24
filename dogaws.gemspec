@@ -19,10 +19,11 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
 
-  spec.add_dependency "thor"
-  spec.add_dependency "aws-sdk"
-  spec.add_dependency "dogapi"
-  spec.add_dependency "parallel"
+  spec.add_runtime_dependency "thor"
+  spec.add_runtime_dependency 'hashie'
+  spec.add_runtime_dependency "aws-sdk"
+  spec.add_runtime_dependency "dogapi"
+  spec.add_runtime_dependency "parallel"
 
   spec.add_development_dependency "bundler", "~> 1.10"
   spec.add_development_dependency "rake", "~> 10.0"
