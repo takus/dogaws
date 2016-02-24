@@ -1,5 +1,4 @@
 require 'thor'
-require 'yaml'
 
 module Dogaws
   class CLI < Thor
@@ -12,10 +11,10 @@ module Dogaws
       :type    => :string
     def post
       begin
-        config = YAML.load_file(options[:config])
-        Dogaws::Collector.new(config).run
+        Dogaws::Config.configure(options)
+        Dogaws::Collector.new.run
       rescue => e
-        Dogaws.logger.error e.message
+        Dogaws.logger.error e
         exit 1
       end
     end

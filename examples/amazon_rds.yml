@@ -1,0 +1,27 @@
+namespace: AWS/RDS
+metric:
+  ReadIOPS:
+    statistics: Maximum
+    unit: Count/Second
+    alias: aws.rds.read_iops
+  WriteIOPS:
+    statistics: Maximum
+    unit: Count/Second
+    alias: aws.rds.write_iops
+sources:
+  - dimensions:
+      DBInstanceIdentifier: YOUR_DB_INSTANCE
+    tags:
+      - region:ap-northeast-1
+      - availability-zone:ap-northeast-1b
+      - dbinstanceclass:db.r3.xlarge
+      - engine:mysql
+      - engineversion:5.6.21b
+aws:
+  access_key: AWS_ACCESS_KEY_ID
+  secret_key: AWS_SECRET_ACCESS_KEY
+  region: AWS_REGION
+datadog:
+  host: cloudwatch
+  api_key: DD_API_KEY
+  app_key: DD_APP_KEY
