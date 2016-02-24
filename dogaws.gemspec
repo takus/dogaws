@@ -20,7 +20,8 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   spec.add_runtime_dependency "thor"
-  spec.add_runtime_dependency 'hashie'
+  spec.add_runtime_dependency "hashie"
+  spec.add_runtime_dependency "json"
   spec.add_runtime_dependency "aws-sdk"
   spec.add_runtime_dependency "dogapi"
   spec.add_runtime_dependency "parallel"
