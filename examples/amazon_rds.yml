@@ -3,6 +3,7 @@ metric:
   CPUUtilization:
     statistics: Maximum
     unit: Percent
+    metric_alias: aws.rds.cpuutilization
   FreeableMemory:
     statistics: Minimum
     unit: Bytes

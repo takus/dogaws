@@ -3,29 +3,36 @@ metric:
   CPUUtilization:
     statistics: Maximum
     unit: Percent
+    metric_alias: aws.rds.cpuutilization
   FreeableMemory:
     statistics: Minimum
     unit: Bytes
   SwapUsage:
     statistics: Maximum
     unit: Bytes
+  NetworkBytesIn:
+    statistics: Sum
+    unit: Bytes
+  NetworkBytesOut:
+    statistics: Sum
+    unit: Bytes
   CurrConnections:
     statistics: Maximum
     unit: Count
   CmdGet:
-    statistics: Sum 
+    statistics: Sum
     unit: Count
   CmdSet:
-    statistics: Sum 
+    statistics: Sum
     unit: Count
   GetHits:
-    statistics: Sum 
+    statistics: Sum
     unit: Count
   GetMisses:
-    statistics: Sum 
+    statistics: Sum
     unit: Count
   Evictions:
-    statistics: Sum 
+    statistics: Sum
     unit: Count
 sources:
   - dimensions:

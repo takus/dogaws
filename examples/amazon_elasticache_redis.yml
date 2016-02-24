@@ -3,35 +3,66 @@ metric:
   CPUUtilization:
     statistics: Maximum
     unit: Percent
+    metric_alias: aws.rds.cpuutilization
   FreeableMemory:
     statistics: Minimum
     unit: Bytes
   SwapUsage:
     statistics: Maximum
     unit: Bytes
+  NetworkBytesIn:
+    statistics: Sum
+    unit: Bytes
+  NetworkBytesOut:
+    statistics: Sum
+    unit: Bytes
   CurrConnections:
     statistics: Maximum
     unit: Count
+  CurrItems:
+    statistics: Count
+    unit: Count
   GetTypeCmds:
-    statistics: Sum 
+    statistics: Sum
     unit: Count
   SetTypeCmds:
-    statistics: Sum 
+    statistics: Sum
+    unit: Count
+  HashBasedCmds:
+    statistics: Sum
+    unit: Count
+  KeyBasedCmds:
+    statistics: Sum
+    unit: Count
+  ListBasedCmds:
+    statistics: Sum
+    unit: Count
+  SetBasedCmds:
+    statistics: Sum
+    unit: Count
+  SortedSetBasedCmds:
+    statistics: Sum
+    unit: Count
+  StringBasedCmds:
+    statistics: Sum
     unit: Count
   CacheHits:
-    statistics: Sum 
+    statistics: Sum
     unit: Count
   CacheMisses:
-    statistics: Sum 
+    statistics: Sum
     unit: Count
   Evictions:
-    statistics: Sum 
+    statistics: Sum
+    unit: Count
+  Reclaimed:
+    statistics: Sum
     unit: Count
   BytesUsedForCache:
     statistics: Maximum
     unit: Bytes
   ReplicationLag:
-    statistics: Maximum 
+    statistics: Maximum
     unit: Seconds
 sources:
   - dimensions:
