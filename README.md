@@ -9,48 +9,36 @@ Run `dogaws` command like this:
 ```bash
 # post cloudwatch metrics to datadog
 $ dogaws --config dogaws.yml
-I, [2016-02-20T01:28:19.119674 #30543]  INFO -- : register (Dogaws::Resource::AwsElasticache)
-I, [2016-02-20T01:28:19.120304 #30543]  INFO -- : register (Dogaws::Resource::AwsRds)
-I, [2016-02-20T01:28:19.120350 #30543]  INFO -- : register (Dogaws::Resource::Base)
-I, [2016-02-20T01:28:19.640037 #30543]  INFO -- : post 5 metrics (aws.rds.read_iops)
-I, [2016-02-20T01:28:19.673308 #30543]  INFO -- : post 5 metrics (aws.rds.write_iops)
-I, [2016-02-20T01:28:19.708111 #30543]  INFO -- : post 5 metrics (aws.rds.read_latency)
-I, [2016-02-20T01:28:19.737766 #30543]  INFO -- : post 5 metrics (aws.rds.write_latency)
-I, [2016-02-20T01:28:19.762912 #30543]  INFO -- : post 4 metrics (aws.rds.cpuutilization)
-I, [2016-02-20T01:28:19.796351 #30543]  INFO -- : post 5 metrics (aws.rds.freeable_memory)
-I, [2016-02-20T01:28:19.825345 #30543]  INFO -- : post 5 metrics (aws.rds.free_storage_space)
-I, [2016-02-20T01:28:19.846445 #30543]  INFO -- : post 5 metrics (aws.rds.network_receive_throughput)
-I, [2016-02-20T01:28:19.870566 #30543]  INFO -- : post 5 metrics (aws.rds.network_transmit_throughput)
-I, [2016-02-20T01:28:19.870674 #30543]  INFO -- : post 1 metrics (aws.rds.iops_utilization)
-I, [2016-02-20T01:28:19.870713 #30543]  INFO -- : post 1 metrics (aws.rds.iops_utilization)
-I, [2016-02-20T01:28:19.870731 #30543]  INFO -- : post 1 metrics (aws.rds.iops_utilization)
-I, [2016-02-20T01:28:19.870751 #30543]  INFO -- : post 1 metrics (aws.rds.iops_utilization)
-I, [2016-02-20T01:28:19.870767 #30543]  INFO -- : post 1 metrics (aws.rds.iops_utilization)
+I, [2016-02-24T15:46:15.654575 #67420]  INFO -- : post 2 metrics {"DBInstanceIdentifier":"xxxx"}
 ```
-This is an example of `dogaws.yml`:
+This is an example of `dogaws.yml` (See `examples` in detail):
 
 ```yaml
-custom_resource_path: /path/to/custom_resource
+namespace: AWS/RDS
+metric:
+  ReadIOPS:
+    statistics: Maximum
+    unit: Count/Second
+  WriteIOPS:
+    statistics: Maximum
+    unit: Count/Second
+sources:
+  - dimensions:
+      DBInstanceIdentifier: YOUR_DB_INSTANCE
+    tags:
+      - region:ap-northeast-1
+      - availability-zone:ap-northeast-1b
+      - dbinstanceclass:db.r3.xlarge
+      - engine:mysql
+      - engineversion:5.6.21b
 aws:
-  region: ap-northeast-1
-  resources:
-    - name: db1
-      type: aws_rds
-      dimensions:
-        - name: DBInstanceIdentifier
-          value: db1
-      tags:
-        - region:ap-northeast-1
-        - availability-zone:ap-northeast-1b
-        - dbinstanceidentifier:db1
-        - dbinstanceclass:db.t2.micro
-        - engine:mysql
-        - engineversion:5.6.21b
-        - dbrole:master
+  access_key: AWS_ACCESS_KEY_ID
+  secret_key: AWS_SECRET_ACCESS_KEY
+  region: AWS_REGION
 datadog:
   host: cloudwatch
-  api_key: xxxx
-  app_key: xxxx
+  api_key: DD_API_KEY
+  app_key: DD_APP_KEY
 ```
 
 You can execute dogaws at regular interval with cron:
