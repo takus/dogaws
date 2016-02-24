@@ -1,0 +1,47 @@
+namespace: AWS/ElastiCache
+metric:
+  CPUUtilization:
+    statistics: Maximum
+    unit: Percent
+  FreeableMemory:
+    statistics: Minimum
+    unit: Bytes
+  SwapUsage:
+    statistics: Maximum
+    unit: Bytes
+  CurrConnections:
+    statistics: Maximum
+    unit: Count
+  GetTypeCmds:
+    statistics: Sum 
+    unit: Count
+  SetTypeCmds:
+    statistics: Sum 
+    unit: Count
+  CacheHits:
+    statistics: Sum 
+    unit: Count
+  CacheMisses:
+    statistics: Sum 
+    unit: Count
+  Evictions:
+    statistics: Sum 
+    unit: Count
+  ReplicationLag:
+    statistics: Maximum 
+    unit: Seconds
+sources:
+  - dimensions:
+      CacheClusterId: YOUR_CACHE_CLUSTER_ID
+    tags:
+      - engine:redis
+      - region:ap-northeast-1
+      - availability-zone:ap-northeast-1b
+aws:
+  access_key: AWS_ACCESS_KEY_ID
+  secret_key: AWS_SECRET_ACCESS_KEY
+  region: AWS_REGION
+datadog:
+  host: cloudwatch
+  api_key: DD_API_KEY
+  app_key: DD_APP_KEY

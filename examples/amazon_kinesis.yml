@@ -1,0 +1,36 @@
+namespace: AWS/Kinesis
+metric:
+  IncomingBytes:
+    statistics: Sum 
+    unit: Bytes
+  IncomingRecords:
+    statistics: Sum 
+    unit: Count
+  GetRecords.Bytes:
+    statistics: Sum 
+    unit: Bytes
+  PutRecord.Latency:
+    statistics: Maximum
+    unit: Milliseconds
+  PutRecords.Latency:
+    statistics: Maximum
+    unit: Milliseconds
+  GetRecords.Latency:
+    statistics: Maximum
+    unit: Milliseconds
+  GetRecords.IteratorAgeMilliseconds:
+    statistics: Maximum
+    unit: Milliseconds
+sources:
+  - dimensions:
+      StreamName: YOUR_STREAM_NAME
+    tags:
+      - region:ap-northeast-1
+aws:
+  access_key: AWS_ACCESS_KEY_ID
+  secret_key: AWS_SECRET_ACCESS_KEY
+  region: AWS_REGION
+datadog:
+  host: cloudwatch
+  api_key: DD_API_KEY
+  app_key: DD_APP_KEY

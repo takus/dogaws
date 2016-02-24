@@ -1,13 +1,32 @@
 namespace: AWS/RDS
 metric:
+  CPUUtilization:
+    statistics: Maximum
+    unit: Percent
+  FreeableMemory:
+    statistics: Minimum
+    unit: Bytes
+  SwapUsage:
+    statistics: Maximum
+    unit: Bytes
+  FreeStorageSpace:
+    statistics: Minimum
+    unit: Bytes
   ReadIOPS:
     statistics: Maximum
     unit: Count/Second
-    alias: aws.rds.read_iops
   WriteIOPS:
     statistics: Maximum
     unit: Count/Second
-    alias: aws.rds.write_iops
+  WriteLatency:
+    statistics: Maximum
+    unit: Seconds
+  NetworkReceiveThroughput:
+    statistics: Maximum
+    unit: Bytes/Second
+  NetworkTransmitThroughput:
+    statistics: Maximum
+    unit: Bytes/Second
 sources:
   - dimensions:
       DBInstanceIdentifier: YOUR_DB_INSTANCE
