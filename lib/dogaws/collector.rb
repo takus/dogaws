@@ -98,7 +98,7 @@ module Dogaws
     end
 
     def emit(name, points, tags)
-      Dogaws.logger.debug "#{name} #{points.to_json} #{tags}"
+      Dogaws.logger.info "#{name} #{points.to_json} #{tags}"
       @dog.emit_points(
         name,
         points,
