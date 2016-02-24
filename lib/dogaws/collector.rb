@@ -18,12 +18,6 @@ module Dogaws
       end
       @cloudwatch = Aws::CloudWatch::Client.new(aws_option)
 
-      @dog = Dogapi::Client.new(
-        config['datadog']['api_key'],
-        application_key=config['datadog']['app_key'],
-        host=config['datadog']['host']
-      )
-
       @namespace = config['namespace'] or raise "'namespace' is missing"
       @metric = config['metric'] or raise "'metric' is missing"
       set_alias
@@ -39,12 +33,29 @@ module Dogaws
     def run
       Parallel.map(@sources, :in_threads => @concurrency) do |source|
         begin
-          @dog.batch_metrics {
-            points = post(source)
-            if points.size > 0
-              Dogaws.logger.info "post #{points.size} metrics #{source['dimensions'].to_json}"
+          emitted = 0
+
+          metric_statistics = fetch(source)
+
+          dog = Dogapi::Client.new(
+            Dogaws::Config.config['datadog']['api_key'],
+            application_key=Dogaws::Config.config['datadog']['app_key'],
+            host=Dogaws::Config.config['datadog']['host']
+          )
+          dog.batch_metrics {
+            metric_statistics.each do |s|
+              name = @metric[s['metric_name']]['metric_alias']
+              points = s['datapoints']
+              tags = source['tags'] + s['dimensions'].map { |d| "#{d['name'].downcase}:#{d['value']}" }
+              dog.emit_points(
+                name,
+                points,
+                :tags => tags
+              )
+              emitted = emitted + points.size
             end
           }
+          Dogaws.logger.info "post #{emitted} points in #{source['dimensions'].to_json}"
         rescue => e
           Dogaws.logger.error "failed to fetch #{source['dimensions'].to_json}"
           raise e
@@ -54,8 +65,8 @@ module Dogaws
 
     private
 
-    def post(source)
-      emitted_points = []
+    def fetch(source)
+      metric_statistics = []
 
       available_metrics = @cloudwatch.list_metrics({
         namespace: @namespace,
@@ -65,9 +76,7 @@ module Dogaws
       available_metrics.each do |m|
         next unless @metric[m.metric_name]
 
-        metric_alias = @metric[m.metric_name]['metric_alias']
-
-        points = @cloudwatch.get_metric_statistics({
+        datapoints = @cloudwatch.get_metric_statistics({
           namespace: m.namespace,
           metric_name: m.metric_name,
           dimensions: m.dimensions.map { |d| {name: d.name, value: d.value} },
@@ -83,27 +92,14 @@ module Dogaws
           ]
         }
 
-        tags = source['tags'] + m.dimensions.map { |d| "#{d.name.downcase}:#{d.value}" }
-
-        emit(metric_alias, points, tags)
-
-        emitted_points << {
+        metric_statistics << {
           'metric_name' => m.metric_name,
-          'dimensions' => m.dimensions.map { |d| {name: d.name, value: d.value} },
-          'points' => points,
+          'dimensions' => m.dimensions.map { |d| {'name' => d.name, 'value' => d.value} },
+          'datapoints' => datapoints,
         }
       end
 
-      emitted_points
-    end
-
-    def emit(name, points, tags)
-      Dogaws.logger.debug "#{name} #{points.to_json} #{tags}"
-      @dog.emit_points(
-        name,
-        points,
-        :tags => tags
-      )
+      metric_statistics
     end
 
     def set_alias
