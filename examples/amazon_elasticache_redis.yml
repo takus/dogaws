@@ -27,6 +27,9 @@ metric:
   Evictions:
     statistics: Sum 
     unit: Count
+  BytesUsedForCache:
+    statistics: Maximum
+    unit: Bytes
   ReplicationLag:
     statistics: Maximum 
     unit: Seconds
