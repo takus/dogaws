@@ -109,7 +109,7 @@ module Dogaws
           suffix = metric_name.gsub(/::/, '/').
           gsub(/([A-Z]+)([A-Z][a-z])/,'\1_\2').
           gsub(/([a-z\d])([A-Z])/,'\1_\2').
-          tr("-", "_").downcase
+          tr("-", "_").tr(".", "_").downcase
           @metric[metric_name]['metric_alias'] = "#{prefix}.#{suffix}"
         end
       end
