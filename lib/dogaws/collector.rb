@@ -46,7 +46,8 @@ module Dogaws
             metric_statistics.each do |s|
               name = @metric[s['metric_name']]['metric_alias']
               points = s['datapoints']
-              tags = source['tags'] + s['dimensions'].map { |d| "#{d['name'].downcase}:#{d['value']}" }
+              tags = source['tags'] +
+                s['dimensions'].map { |d| "#{d['name'].downcase.gsub(/availabilityzone/,'availability-zone')}:#{d['value']}" }
               dog.emit_points(
                 name,
                 points,
