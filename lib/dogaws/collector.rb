@@ -74,18 +74,29 @@ module Dogaws
         dimensions: source['dimensions'].map { |name, value| {name: name, value: value} }
       }).metrics
 
+      max_dimension_metrics = {}
       available_metrics.each do |m|
-        next unless @metric[m.metric_name]
+        if max_dimension_metrics[m.metric_name]
+          if m.dimensions.size > max_dimension_metrics[m.metric_name].dimensions.size
+            max_dimension_metrics[m.metric_name] = m
+          end
+        else
+          max_dimension_metrics[m.metric_name] = m
+        end
+      end
+
+      max_dimension_metrics.each do |name, m|
+        next unless @metric[name]
 
         datapoints = @cloudwatch.get_metric_statistics({
-          namespace: m.namespace,
-          metric_name: m.metric_name,
+          namespace: @namespace,
+          metric_name: name,
           dimensions: m.dimensions.map { |d| {name: d.name, value: d.value} },
           start_time: @start_time,
           end_time: @end_time,
           period: @period,
-          statistics: [@metric[m.metric_name]['statistics']],
-          unit: @metric[m.metric_name]['unit'],
+          statistics: [@metric[name]['statistics']],
+          unit: @metric[name]['unit'],
         }).datapoints.map { |d|
           [
             d.timestamp,
@@ -94,7 +105,7 @@ module Dogaws
         }
 
         metric_statistics << {
-          'metric_name' => m.metric_name,
+          'metric_name' => name,
           'dimensions' => m.dimensions.map { |d| {'name' => d.name, 'value' => d.value} },
           'datapoints' => datapoints,
         }
