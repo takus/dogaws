@@ -74,41 +74,46 @@ module Dogaws
         dimensions: source['dimensions'].map { |name, value| {name: name, value: value} }
       }).metrics
 
-      max_dimension_metrics = {}
+      metric_list = {}
       available_metrics.each do |m|
-        if max_dimension_metrics[m.metric_name]
-          if m.dimensions.size > max_dimension_metrics[m.metric_name].dimensions.size
-            max_dimension_metrics[m.metric_name] = m
+        if metric_list[m.metric_name]
+          if m.dimensions.size > metric_list[m.metric_name].first.dimensions.size
+            metric_list[m.metric_name] = []
+            metric_list[m.metric_name] << m
+          elsif m.dimensions.size == metric_list[m.metric_name].first.dimensions.size
+            metric_list[m.metric_name] << m
           end
         else
-          max_dimension_metrics[m.metric_name] = m
+          metric_list[m.metric_name] = []
+          metric_list[m.metric_name] << m
         end
       end
 
-      max_dimension_metrics.each do |name, m|
+      metric_list.each do |name, list|
         next unless @metric[name]
+        list.each do |m|
+          datapoints = @cloudwatch.get_metric_statistics({
+            namespace: @namespace,
+            metric_name: name,
+            dimensions: m.dimensions.map { |d| {name: d.name, value: d.value} },
+            start_time: @start_time,
+            end_time: @end_time,
+            period: @period,
+            statistics: [@metric[name]['statistics']],
+            unit: @metric[name]['unit'],
+          }).datapoints.map { |d|
+            [
+              d.timestamp,
+              d.maximum || d.sum || d.average || d.minimum || d.sample_count
+            ]
+          }
 
-        datapoints = @cloudwatch.get_metric_statistics({
-          namespace: @namespace,
-          metric_name: name,
-          dimensions: m.dimensions.map { |d| {name: d.name, value: d.value} },
-          start_time: @start_time,
-          end_time: @end_time,
-          period: @period,
-          statistics: [@metric[name]['statistics']],
-          unit: @metric[name]['unit'],
-        }).datapoints.map { |d|
-          [
-            d.timestamp,
-            d.maximum || d.sum || d.average || d.minimum || d.sample_count
-          ]
-        }
-
-        metric_statistics << {
-          'metric_name' => name,
-          'dimensions' => m.dimensions.map { |d| {'name' => d.name, 'value' => d.value} },
-          'datapoints' => datapoints,
-        }
+          metric_statistics << {
+            'metric_name' => name,
+            'dimensions' => m.dimensions.map { |d| {'name' => d.name, 'value' => d.value} },
+            'datapoints' => datapoints,
+          }
+        end
       end
 
       metric_statistics
